@@ -1,4 +1,5 @@
 package tp_paa;
+import java.io.*;
 
 public class Grafo {
 	private int [] nAdjacencias;
@@ -28,7 +29,38 @@ public class Grafo {
     }
     public void leGrafo(String nomeDoArquivo)
     {
-       
+    	System.out.println("Entrou 1");
+    	try {
+    		 BufferedReader br = new BufferedReader(new FileReader("teste1.txt"));
+    		 System.out.println("entrou 2 ");
+    		 arestas = new int[vertices][vertices];
+    		 
+    		this.vertices = Integer.parseInt(br.readLine()); //Rolou.
+    		 
+    		
+    		
+    		 System.out.println("vertices:" + getVertices());
+    		 while(br.ready())
+    		 {
+    			 int [] linhas = new int[getVertices()];
+    			
+    			
+    			for(int i=0; i<getVertices(); i++)
+    			{
+    				linhas[i] = br.read();
+    				this.arestas[i] = linhas;
+    				
+    			}
+    				
+    		 }
+    		 
+    		 br.close();
+    	}
+    	catch(IOException ioe) {
+    		System.out.println("PAOOO");
+    		ioe.printStackTrace();
+    	}
+    	
     }
     public int[] listaAdjacencias(int coluna)
     {
@@ -153,7 +185,8 @@ public class Grafo {
 }
     public void imprimeGrafo()
     {
-        System.out.println();
+    	
+        System.out.println("VALOR DOS VERTICES: " + getVertices());
         for(int i=0; i<getVertices(); i++)
         {
             for(int j=0; j<getVertices(); j++)
