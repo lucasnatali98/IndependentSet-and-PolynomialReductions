@@ -31,32 +31,42 @@ public class Grafo {
     }
     public void leGrafo(String nomeDoArquivo) throws FileNotFoundException
     {
-    	Scanner leitura = new Scanner(new File("testeSat2.txt"));
+    	Scanner leitura = new Scanner(new File(nomeDoArquivo));
     	int linha=0,coluna=0;
-    	System.out.println("Entrou 1");
-    	
-       	
-    	      this.vertices = leitura.nextInt();
-    	      System.out.println(getVertices());
-    	      this.arestas = new int[12][getVertices()];
-    	      
-    	      while (leitura.hasNext()) {
-    	    	  int aux = leitura.nextInt();
-    	    	  this.arestas[linha][coluna] = aux;
-    	    	  
-    	    	  coluna++;
-    	    	  if(coluna == getVertices())
-    	    	  {
-    	    		  coluna = 0;
-    	    		  linha++;
-    	    	  }
-    	    	     	    	
-    	      }  
-    	      setContadorLinha(linha);
-    	   
-    
-    	leitura.close();	
-    	}
+    	this.vertices = leitura.nextInt();
+	    System.out.println(getVertices());
+	    this.arestas = new int[12][getVertices()];
+	      
+	    while (leitura.hasNext()) {
+	    	int aux = leitura.nextInt();
+	    	this.arestas[linha][coluna] = aux;
+	    	coluna++;
+	    	if(coluna == getVertices())
+	    	{
+    		  coluna = 0;
+    		  linha++;
+	    	}     	    	
+	    }
+	    leitura.close();
+	    setContadorLinha(linha);
+	   
+	    nAdjacencias = new int[getVertices()];
+	    for (int i = 0; i < getVertices(); i++) {
+			nAdjacencias[i] = 0;
+		}
+	    
+	    int cont;
+	    for(int i=0; i< getVertices(); i++ ){
+	        int[] adjacencias = listaAdjacencias(i);        // recebe a lista de adjacencias do vertice
+	        cont =0;
+	        for(int j=0; j< getVertices(); j++){
+	            if (adjacencias[i] == 1)                          // conta o numero de vizinhos do vertice
+	                cont ++;
+	        }
+	        nAdjacencias[i]=cont;
+	    }
+    		
+    }
     	
     	
     
@@ -67,7 +77,7 @@ public class Grafo {
     
     public int[] conjuntoIndependente()
     {
-        int []conjunto = new int[vertices];
+        int []conjunto = new int[getVertices()];
         
         for(int i=0; i<getVertices(); i++) conjunto[i] = 1;
   
@@ -75,7 +85,7 @@ public class Grafo {
         
         for(int j=0; j<getVertices(); j++)
         {
-            int [] proposta = new int[vertices];
+            int [] proposta = new int[getVertices()];
             for(int k=0; k< getVertices(); k++)
             {
                 proposta[k] = 0;
@@ -92,6 +102,7 @@ public class Grafo {
             }
            
         }
+        
         return conjunto;   
     }
     
