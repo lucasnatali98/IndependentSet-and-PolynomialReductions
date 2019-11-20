@@ -1,5 +1,7 @@
 package tp_paa;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Grafo {
 	private int [] nAdjacencias;
@@ -12,7 +14,7 @@ public class Grafo {
     public int [][] matrizAux;
     
     
-    public Grafo(String nomeDoArquivo)
+    public Grafo(String nomeDoArquivo) throws FileNotFoundException
     {
         if(nomeDoArquivo != "")
         {
@@ -27,41 +29,37 @@ public class Grafo {
         }
         
     }
-    public void leGrafo(String nomeDoArquivo)
+    public void leGrafo(String nomeDoArquivo) throws FileNotFoundException
     {
+    	Scanner leitura = new Scanner(new File("testeSat2.txt"));
+    	int linha=0,coluna=0;
     	System.out.println("Entrou 1");
-    	try {
-    		 BufferedReader br = new BufferedReader(new FileReader("teste1.txt"));
-    		 System.out.println("entrou 2 ");
-    		 arestas = new int[vertices][vertices];
-    		 
-    		this.vertices = Integer.parseInt(br.readLine()); //Rolou.
-    		 
-    		
-    		
-    		 System.out.println("vertices:" + getVertices());
-    		 while(br.ready())
-    		 {
-    			 int [] linhas = new int[getVertices()];
-    			
-    			
-    			for(int i=0; i<getVertices(); i++)
-    			{
-    				linhas[i] = br.read();
-    				this.arestas[i] = linhas;
-    				
-    			}
-    				
-    		 }
-    		 
-    		 br.close();
-    	}
-    	catch(IOException ioe) {
-    		System.out.println("PAOOO");
-    		ioe.printStackTrace();
+    	
+       	
+    	      this.vertices = leitura.nextInt();
+    	      System.out.println(getVertices());
+    	      this.arestas = new int[12][getVertices()];
+    	      
+    	      while (leitura.hasNext()) {
+    	    	  int aux = leitura.nextInt();
+    	    	  this.arestas[linha][coluna] = aux;
+    	    	  
+    	    	  coluna++;
+    	    	  if(coluna == getVertices())
+    	    	  {
+    	    		  coluna = 0;
+    	    		  linha++;
+    	    	  }
+    	    	     	    	
+    	      }  
+    	      setContadorLinha(linha);
+    	   
+    
+    	leitura.close();	
     	}
     	
-    }
+    	
+    
     public int[] listaAdjacencias(int coluna)
     {
         return this.arestas[coluna];
@@ -186,12 +184,13 @@ public class Grafo {
     public void imprimeGrafo()
     {
     	
-        System.out.println("VALOR DOS VERTICES: " + getVertices());
-        for(int i=0; i<getVertices(); i++)
+        
+        for(int i=0; i<getContadorLinha(); i++)
         {
+        	System.out.println();
             for(int j=0; j<getVertices(); j++)
             {
-                System.out.println(this.arestas[i][j]);
+                System.out.print(this.arestas[i][j]+ " | ");
             }
             System.out.println();
         }
