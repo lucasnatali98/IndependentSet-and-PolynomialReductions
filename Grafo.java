@@ -183,7 +183,7 @@ public class Grafo {
         }
     }
     return true;
-}
+    }
 
     public boolean ePromissor(int []solucao, int melhor){
     int contador=0;
@@ -191,11 +191,10 @@ public class Grafo {
         if(solucao[i] == 1)
             contador++;
     return contador > melhor;
-}
+    }
+    
     public void imprimeGrafo()
-    {
-    	
-        
+    {       
         for(int i=0; i<getContadorLinha(); i++)
         {
         	System.out.println();
@@ -203,10 +202,161 @@ public class Grafo {
             {
                 System.out.print(this.arestas[i][j]+ " | ");
             }
-            System.out.println();
         }
     }
-    
+
+    public void leSat(String nomeDoArquivo) throws FileNotFoundException
+    {
+    	String fimDeLinha;
+    	Scanner leitura = new Scanner(new File(nomeDoArquivo));
+    	
+    	this.contadorLinha = 0;
+    	int v = leitura.nextInt();
+    	
+    	System.out.println("Numero de vertices (SAT): ");
+    	while(leitura.hasNext()) {
+    		
+    		this.contadorLinha++;
+    			
+    	}
+    	
+    	leitura.close();
+    	
+    	System.out.println("ContadorLinha: "+getContadorLinha());//Pegando TODAS linhas
+    	//Alocando memória para as matrizes
+    	this.matrizSat = new int[getContadorLinha()-2][getVertices()];
+    	this.matrizAux = new int[getContadorLinha()-2][getVertices()];
+    	
+    	
+    	//Preenchendo a matriz com zeros
+    	for (int i = 0; i < getContadorLinha()-1; i++) {
+			for (int j = 0; j < arestas.length; j++) {
+				
+			}
+		}
+    }
+    public void imprimeSat()
+    {
+    	for (int i = 0; i < getTamanho(); i++) {
+    		System.out.println();
+			for (int j = 0; j < getTamanho(); j++) {
+				System.out.print(this.arestas[i][j] + " | ");
+			}
+		}
+    }
+    public int[] satisfatibilidade()
+    {
+    	// Faz as ligações das variáveis(vértices) pertencentes a mesma clausula 
+        this.tamanho = 0;
+        int contador = 0, aux = 0;
+        int i = 0, j = 0, k = 0, m = 0;
+
+        for(i = 0; i < contadorLinha; i++){     // Pega o total de variaveis diferentes de 2
+            for(j = 0; j < vertices; j++)
+                if(matrizSat[i][j] != 2)
+                    tamanho++;
+        }
+        arestas = new int[tamanho][tamanho]; // Cria uma matriz de tamanho = tamanho * tamanho
+        for(i=0; i < tamanho; i++)
+            arestas[i] = new int[tamanho];
+
+        for(i = 0; i < tamanho; i++)            // Preenche a matriz criada com zeros
+            for(j = 0; j < tamanho; j++)
+                arestas[i][j] = 0;
+
+        for(i = 0; i < contadorLinha; i++){     // Percorre a matriz de entrada do SAT
+            for(j = 0; j < vertices; j++){
+                if(matrizSat[i][j] != 2)          // Conta todos os valores da matriz diferentes de 2 na mesma linha 
+                    contador++;
+
+                for(k = 0; k < contador; k++)
+                    for(m = 0; m < contador; m++){
+                        if(k != m)
+                            arestas[k+aux][m+aux] = 1;    // Se não atribui valor 1 (ligação de variaveis da mesma clausula)
+                    }
+            }
+            aux += contador;
+            contador = 0;
+        }
+
+        // Preenche matriz auxiliar
+        int qtd = 0;
+
+        for(int x= 0; x < getContadorLinha(); x++){
+            for(int y = 0; y < getVertices(); y++){
+                if (matrizSat[x][y] == 2)
+                {
+                    matrizAux[x][y] = -1;
+                }else{
+                    matrizAux[x][y] = qtd;
+                    qtd++;
+                }
+            }
+        }
+
+        // Faz as ligações da mesma variavél(vértice) negada e não negada
+        i = 0;
+        j = 0;
+        aux = 1;
+        int numCol = 1;
+
+        while (numCol != vertices+1)
+        {
+            while (i != contadorLinha-1)
+            {
+                if (matrizSat[i][numCol-1] != 2 ){
+                    if (matrizSat[aux][numCol-1] != 2)
+                    {
+                        if (matrizSat[aux][numCol-1] != matrizSat[i][numCol-1] )
+                        {
+                            //ligacao no grafo grande
+                            int numeroColuna = matrizAux[i][numCol-1];
+                            int numeroLinha =  matrizAux[aux][numCol-1];
+
+                            arestas[numeroColuna][numeroLinha] = 1;
+                            arestas[numeroLinha][numeroColuna] = 1;
+                        }
+                    }
+                }
+
+                aux++;
+
+                if (aux == contadorLinha ){
+                    i++;
+                    aux = i+1;
+                }
+            }
+            i=0;
+            j++;
+            aux=1;
+            numCol++;
+        }
+
+        int ponte = vertices;
+        vertices = tamanho;
+
+        int[] conjuntoIndependente = this.conjuntoIndependente();
+
+        j=0;
+        for(i=0; i < vertices; i++)
+            if(conjuntoIndependente[i]==1)
+                j++;
+
+        if(j==contadorLinha){
+            System.out.println("Possui");
+        }
+        else{
+            System.out.println("Nao possui");
+            for (i=0;i < getVertices(); i++)
+            {
+                conjuntoIndependente[i]=0;
+            }
+        }
+        System.out.println("solucao que satisfaca!");
+        vertices = ponte;
+        return conjuntoIndependente;
+    	
+    }
     public int[] getnAdjacencias() {
         return nAdjacencias;
     }
