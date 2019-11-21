@@ -207,33 +207,44 @@ public class Grafo {
 
     public void leSat(String nomeDoArquivo) throws FileNotFoundException
     {
-    	String fimDeLinha;
-    	Scanner leitura = new Scanner(new File(nomeDoArquivo));
-    	
+    	Scanner leitura = new Scanner(new File(nomeDoArquivo));	
     	this.contadorLinha = 0;
-    	int v = leitura.nextInt();
+    	this.vertices = leitura.nextInt();
     	
-    	System.out.println("Numero de vertices (SAT): ");
+    	//System.out.println("Numero de vertices (SAT): " + getVertices());
+    	leitura.nextLine(); //Necessário para pular a linha dos vertices
     	while(leitura.hasNext()) {
-    		
+    		leitura.nextLine();
     		this.contadorLinha++;
-    			
     	}
     	
-    	leitura.close();
     	
     	System.out.println("ContadorLinha: "+getContadorLinha());//Pegando TODAS linhas
+    	
     	//Alocando memória para as matrizes
     	this.matrizSat = new int[getContadorLinha()-2][getVertices()];
     	this.matrizAux = new int[getContadorLinha()-2][getVertices()];
     	
     	
     	//Preenchendo a matriz com zeros
+    	//TA COM PROBLEMA
     	for (int i = 0; i < getContadorLinha()-1; i++) {
-			for (int j = 0; j < arestas.length; j++) {
-				
+			for (int j = 0; j < getVertices(); j++) {
+				this.matrizSat[i][j] = 0;
 			}
 		}
+    	
+    	setContadorLinha(0);
+    	setContadorColuna(0);
+    	
+    	 System.out.println("...: " + leitura.nextInt());
+    	/*
+    	while(leitura.hasNext())
+    	{
+    		
+    	}
+    	*/
+    	leitura.close();
     }
     public void imprimeSat()
     {
