@@ -225,26 +225,37 @@ public class Grafo {
     	this.matrizSat = new int[getContadorLinha()-2][getVertices()];
     	this.matrizAux = new int[getContadorLinha()-2][getVertices()];
     	
-    	
+    	System.out.println("getContadorLinha()-2 = " + (getContadorLinha()-2));
+    	System.out.println("Vertices = "+ getVertices());
     	//Preenchendo a matriz com zeros
     	//TA COM PROBLEMA
-    	for (int i = 0; i < getContadorLinha()-1; i++) {
+    	for (int i = 0; i < getContadorLinha()-2; i++) {
 			for (int j = 0; j < getVertices(); j++) {
 				this.matrizSat[i][j] = 0;
 			}
 		}
-    	
+    	//leitura.reset();
+    	//leitura.radix();
     	setContadorLinha(0);
     	setContadorColuna(0);
-    	
-    	 System.out.println("...: " + leitura.nextInt());
-    	/*
-    	while(leitura.hasNext())
-    	{
-    		
-    	}
-    	*/
+    	System.out.println("CL: " + getContadorLinha() + "| CC: "+ getContadorColuna());
     	leitura.close();
+    	Scanner leitura2 = new Scanner(new File(nomeDoArquivo));
+    	while(leitura2.hasNext())
+    	{
+    		this.matrizSat = new int [getContadorLinha()][getContadorColuna()];
+    		this.matrizSat[getContadorLinha()][getContadorColuna()] = leitura2.nextInt();
+    		this.contadorColuna++;
+
+            if(contadorColuna == vertices){
+                contadorLinha++;
+                contadorColuna = 0;
+            }
+    	}
+    	
+    	leitura2.close();
+    	
+    	
     }
     public void imprimeSat()
     {
