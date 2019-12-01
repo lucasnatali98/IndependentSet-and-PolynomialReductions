@@ -1,4 +1,4 @@
-package tp_paa;
+//package tp_paa;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -34,7 +34,7 @@ public class Grafo {
     	Scanner leitura = new Scanner(new File(nomeDoArquivo));
     	int linha=0,coluna=0;
     	this.vertices = leitura.nextInt();
-	    System.out.println(getVertices());
+	    //System.out.println(getVertices());
 	    this.arestas = new int[12][getVertices()];
 	      
 	    while (leitura.hasNext()) {
@@ -207,6 +207,56 @@ public class Grafo {
 
     public void leSat(String nomeDoArquivo) throws FileNotFoundException
     {
+        Scanner scanner = new Scanner(new File(nomeDoArquivo));
+        this.contadorLinha = 0;
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            System.out.println(line);
+            this.contadorLinha++;
+            // process the line
+        }
+
+        this.matrizSat = new int[getContadorLinha()-1][getVertices()];
+        this.matrizAux = new int[getContadorLinha()-1][getVertices()];
+
+
+        //for (int i = 0; i < getContadorLinha()-1; i++) {
+        //    for (int j = 0; j < getVertices(); j++) {
+        //        System.out.print(this.matrizSat[i][j] + " ");
+        //    }
+        //    System.out.print("\n");
+        //}
+
+        for (int i = 0; i < getContadorLinha()-1; i++) {  // preenche a matriz com zeros
+            for (int j = 0; j < getVertices(); j++) {
+                matrizSat[i][j] = 0;
+            }
+        }
+
+        setContadorLinha(0);
+        setContadorColuna(0);
+
+        Scanner leitura2 = new Scanner(new File(nomeDoArquivo));
+        leitura2.nextInt();
+        System.out.print("\n");
+        System.out.print("\n");
+        while(leitura2.hasNext())
+        {
+            //this.matrizSat = new int [getContadorLinha()][getContadorColuna()];
+
+            this.matrizSat[getContadorLinha()][getContadorColuna()] = leitura2.nextInt();
+            System.out.print(this.matrizSat[getContadorLinha()][getContadorColuna()] + " ");
+            this.contadorColuna++;
+
+            if(contadorColuna == vertices){
+                contadorLinha++;
+                System.out.print("\n");
+                contadorColuna = 0;
+            }
+        }
+
+
+        /*
     	Scanner leitura = new Scanner(new File(nomeDoArquivo));	
     	this.contadorLinha = 0;
     	this.vertices = leitura.nextInt();
@@ -254,7 +304,7 @@ public class Grafo {
     	}
     	
     	leitura2.close();
-    	
+    	*/
     	
     }
     public void imprimeSat()
